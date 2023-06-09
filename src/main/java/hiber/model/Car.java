@@ -1,17 +1,19 @@
 package hiber.model;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.GenerationType;
 import javax.persistence.Column;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name = "cars")
 public class Car {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,9 +22,10 @@ public class Car {
     private String model;
 
     @Column(name = "series")
-    private int series;
-    @OneToOne()
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private Integer series;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "users_id")
     private User user;
 
     public Car() {
@@ -49,11 +52,11 @@ public class Car {
         this.model = model;
     }
 
-    public int getSeries() {
+    public Integer getSeries() {
         return series;
     }
 
-    public void setSeries(int series) {
+    public void setSeries(Integer series) {
         this.series = series;
     }
 

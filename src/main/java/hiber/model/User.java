@@ -1,12 +1,6 @@
 package hiber.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Column;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -25,7 +19,8 @@ public class User {
    @Column(name = "email")
    private String email;
 
-   @OneToOne(mappedBy = "user")
+   @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+   @JoinColumn(name = "car_id")
    private Car car;
 
    public User() {
@@ -69,11 +64,11 @@ public class User {
       this.email = email;
    }
 
-   public Car getCar() {
+   public Car getUserByCar() {
       return car;
    }
 
-   public Car setCar(Car car) {
+   public Car setUserByCar(Car car) {
       this.car = car;
       return car;
    }
