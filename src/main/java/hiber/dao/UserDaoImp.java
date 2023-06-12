@@ -3,6 +3,7 @@ package hiber.dao;
 import hiber.model.User;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -30,9 +31,13 @@ public class UserDaoImp implements UserDao {
 
     @Override
     @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
     public User getUserByCar(String model, Integer series) {
-        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery(
-                "SELECT User.car.model,  User.car.series From User FULL JOIN Car");
+        TypedQuery<User> query = sessionFactory
+                .getCurrentSession()
+                .createQuery("FROM User user LEFT JOIN FETCH user.car where user.car.model = :model  and user.car.series = :series")
+                .setParameter("model", model)
+                .setParameter("series", series);
         return query.getSingleResult();
     }
 }
